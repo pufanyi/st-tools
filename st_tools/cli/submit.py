@@ -15,4 +15,4 @@ def configure_parser(subparsers):
 def submit(args: argparse.Namespace):
     """The entry point for the 'submit' command."""
     command = Script(args.script, args.env, args.cwd)
-    command.output_script()
+    command.execute()

@@ -34,12 +34,23 @@ st-tools submit <path/to/script>
 
 ## Development Guidelines
 
-### `rich` Library Usage
+### UI Design Principles
 
-When working with the `rich` library, please adhere to the following:
+This project uses two primary libraries for its command-line interface. Adhering to these guidelines ensures a consistent and user-friendly experience.
+
+#### Output: `rich`
+
+For all **output** displayed to the user, such as status messages, tables, formatted text, and progress bars, the `rich` library must be used.
 
 *   **`Group` vs. `RenderGroup`**: `RenderGroup` is deprecated. Use `Group` imported from `rich.console` to group renderable elements.
 *   **Markup Closing Tags**: Ensure all markup tags are closed correctly and in the proper order. An opening tag like `[bold magenta]` must be closed with a corresponding `[/]` or `[/bold magenta]`. An incorrect closing tag (e.g., `[/magenta]`) will raise a `rich.errors.MarkupError`.
+
+#### Input: `InquirerPy`
+
+For all interactive **input** from the user, such as asking questions, requesting confirmations, or presenting selection prompts, the `InquirerPy` library must be used. This provides a consistent and powerful way to handle user interaction.
+
+*   **Use Case**: Employ `InquirerPy` for prompts like yes/no questions, multiple-choice selections, and free-text input.
+*   **Consistency**: Use consistent styling for prompts throughout the application.
 
 ### Output Design Specification
 

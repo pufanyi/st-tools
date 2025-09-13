@@ -4,10 +4,12 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "rich>=14.1.0",
+]
 
 [project.scripts]
-st-tools = "st_tools.cli:main"
+st-tools = "st_tools.cli.main:main"
 
 [dependency-groups]
 dev = [

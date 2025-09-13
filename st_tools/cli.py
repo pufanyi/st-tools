@@ -1,2 +1,6 @@
+import os
+
+
 def main():
-    print("Hello from st-tools!")
+    path = os.getcwd()
+    print(f"Hello from {path}")

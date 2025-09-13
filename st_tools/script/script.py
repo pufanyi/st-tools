@@ -1,6 +1,11 @@
 import os
 from pathlib import Path
 
+from rich.console import Console, Group
+from rich.panel import Panel
+from rich.syntax import Syntax
+from rich.text import Text
+
 
 class Script:
     def __init__(
@@ -35,10 +40,39 @@ class Script:
         if env:
             self.env.update(env)
 
+        self.custom_env = env or {}
         self.cwd = Path(cwd).resolve() if cwd else Path.cwd()
 
     def output_script(self):
-        pass
+        console = Console()
+
+        lines = [
+            Text.from_markup(
+                f"[bold magenta]Working Directory:[/] [cyan]{self.cwd}[/]"
+            )
+        ]
+
+        if self.custom_env:
+            lines.append(
+                Text.from_markup("\n[bold magenta]Environment Variables:[/]")
+            )
+            for key, value in self.custom_env.items():
+                lines.append(Text.from_markup(f'  [green]{key}[/] = [yellow]"{value}"[/]'))
+
+        lines.append(Text.from_markup("\n[bold magenta]Command to be executed:[/magenta]"))
+
+        script_syntax = Syntax(self.script, "bash", theme="monokai", line_numbers=False)
+
+        render_group = Group(*lines, script_syntax)
+
+        panel = Panel(
+            render_group,
+            title="[bold yellow]Script Execution Plan[/bold yellow]",
+            border_style="blue",
+            expand=False,
+            padding=(1, 2),
+        )
+        console.print(panel)
 
     def execute(self, need_confirm: bool = True):
         pass

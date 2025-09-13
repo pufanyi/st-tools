@@ -13,13 +13,15 @@ class Script:
         if isinstance(script, os.PathLike):
             script_file = Path(script)
             if not script_file.exists() or not script_file.is_file():
-                raise FileNotFoundError(f"Script {script_file} does not exist, or is not a file")
+                raise FileNotFoundError(
+                    f"Script {script_file} does not exist, or is not a file"
+                )
         elif isinstance(script, str):
             try:
                 script_file = Path(script)
                 if not script_file.exists() or not script_file.is_file():
                     script_file = None
-            except Exception as e:
+            except Exception:
                 script_file = None
         else:
             raise ValueError(f"Invalid script type: {type(script)}")
@@ -34,7 +36,7 @@ class Script:
             self.env.update(env)
 
         self.cwd = Path(cwd).resolve() if cwd else Path.cwd()
-    
+
     def output_script(self):
         pass
 

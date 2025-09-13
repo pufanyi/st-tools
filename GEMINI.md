@@ -1,41 +1,56 @@
 # Gemini's Notes: st-tools Project
 
-This document is intended to be a living document that provides a high-level overview of the `st-tools` project. It should be updated frequently to reflect the current state of the project.
+This document provides a high-level overview of the `st-tools` project. It should be updated frequently to reflect the current state of the project and serve as a quick reference for developers.
 
 ## Project Overview
 
-This is a Python command-line interface (CLI) tool named `st-tools`. The source code is located in the `st_tools/` directory.
+`st-tools` is a Python command-line interface (CLI) tool designed to streamline development workflows. The main source code is located in the `st_tools/` directory.
 
-## Packaging and Dependencies
+## Project Structure
 
-*   **Configuration:** The project is configured using `pyproject.toml`.
-*   **Dependency Manager:** Uses `uv` for dependency management, with dependencies locked in `uv.lock`. To add a new dependency, use the `uv add <dependency-name>` command.
-*   **Main Dependency:** `rich` for rich text formatting in the terminal.
-*   **Development Dependencies:** `ruff` for linting and `pre-commit` for git hooks.
+*   `st_tools/cli/main.py`: The main entry point for the CLI, using `argparse` to handle commands.
+*   `st_tools/cli/submit.py`: Implements the logic for the `submit` subcommand.
+*   `st_tools/script/script.py`: Contains the `Script` class responsible for preparing and displaying command execution plans.
+*   `pyproject.toml`: Defines project metadata, dependencies, and the `st-tools` script entry point.
+*   `GEMINI.md`: This file, containing essential project information.
 
-## Structure and Execution
+## Dependencies & Tooling
 
-*   **Entry Point:** The CLI is exposed via the `st-tools` command, which is defined in `[project.scripts]` in `pyproject.toml`.
-*   **Main Function:** The script entry point maps to the `main` function in `st_tools/cli/main.py`.
-*   **Command Structure:** The CLI uses `argparse` with subparsers to handle different commands. The only command implemented so far is `submit`, with its logic stub in `st_tools/cli/submit.py`.
+*   **Dependency Manager**: The project uses `uv`. Dependencies are listed in `pyproject.toml` and locked in `uv.lock`.
+    *   To add a new dependency, run: `uv add <dependency-name>`
+*   **Main Dependency**: `rich` is used for all rich text and formatted output in the terminal.
+*   **Dev Dependencies**:
+    *   `ruff`: For linting and code formatting.
+    *   `pre-commit`: For managing and executing pre-commit hooks.
 
-## Documentation
+## Running the CLI
 
-This file (`GEMINI.md`) should be reviewed and updated frequently (e.g., after each code change) to ensure that the information is always up-to-date and accurately reflects the project's status. It's important to check for any misunderstandings or incorrect information.
+The CLI is exposed via the `st-tools` command, which is defined in the `[project.scripts]` section of `pyproject.toml`.
 
-## Output Design Specification
+Example usage:
+```bash
+st-tools submit <path/to/script>
+```
 
-When presenting information to the user, especially for script execution or previews, the following `rich`-based design should be used to ensure a consistent and aesthetically pleasing user experience.
+## Development Guidelines
 
-### Script Execution Plan
+### `rich` Library Usage
 
-Before executing a command or script, display a summary using a `rich.panel.Panel`.
+When working with the `rich` library, please adhere to the following:
 
--   **Title:** The panel should have a title, e.g., `[bold yellow]Script Execution Plan[/bold yellow]`.
--   **Border:** Use a distinct border style, e.g., `border_style="blue"`.
--   **Content:** The panel should clearly display:
-    1.  **Working Directory:** The directory where the command will run. (e.g., `[bold magenta]Working Directory:[/] [cyan]/path/to/dir[/]`)
-    2.  **Environment Variables:** Any *custom* environment variables being set for the command. (e.g., `[green]VAR_NAME[/] = [yellow]"value"[/]`)
-    3.  **Command:** The command or script to be executed. This should be syntax-highlighted using `rich.syntax.Syntax` with the `bash` lexer and a theme like `monokai`.
+*   **`Group` vs. `RenderGroup`**: `RenderGroup` is deprecated. Use `Group` imported from `rich.console` to group renderable elements.
+*   **Markup Closing Tags**: Ensure all markup tags are closed correctly and in the proper order. An opening tag like `[bold magenta]` must be closed with a corresponding `[/]` or `[/bold magenta]`. An incorrect closing tag (e.g., `[/magenta]`) will raise a `rich.errors.MarkupError`.
 
-This provides the user with a clear, readable confirmation of what is about to happen.
+### Output Design Specification
+
+To ensure a consistent user experience, all script execution previews must use the following `rich`-based design.
+
+**Script Execution Plan Panel:**
+
+*   **Component**: `rich.panel.Panel`
+*   **Title**: `[bold yellow]Script Execution Plan[/bold yellow]`
+*   **Border Style**: `blue`
+*   **Content**: The panel should clearly display:
+    1.  **Working Directory**: e.g., `[bold magenta]Working Directory:[/] [cyan]/path/to/dir[/]`
+    2.  **Environment Variables**: List any custom environment variables being set.
+    3.  **Command**: The command to be executed, syntax-highlighted using `rich.syntax.Syntax` with the `bash` lexer.

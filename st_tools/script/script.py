@@ -47,17 +47,15 @@ class Script:
         console = Console()
 
         lines = [
-            Text.from_markup(
-                f"[bold magenta]Working Directory:[/] [cyan]{self.cwd}[/]"
-            )
+            Text.from_markup(f"[bold magenta]Working Directory:[/] [cyan]{self.cwd}[/]")
         ]
 
         if self.custom_env:
-            lines.append(
-                Text.from_markup("\n[bold magenta]Environment Variables:[/]")
-            )
+            lines.append(Text.from_markup("\n[bold magenta]Environment Variables:[/]"))
             for key, value in self.custom_env.items():
-                lines.append(Text.from_markup(f'  [green]{key}[/] = [yellow]"{value}"[/]'))
+                lines.append(
+                    Text.from_markup(f'  [green]{key}[/] = [yellow]"{value}"[/]')
+                )
 
         lines.append(Text.from_markup("\n[bold magenta]Command to be executed:[/]"))
 

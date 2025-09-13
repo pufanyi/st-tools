@@ -1,7 +1,6 @@
 import argparse
-import sys
 
-from .submit import submit
+from .submit import configure_parser as configure_submit_parser
 
 
 def main():
@@ -10,14 +9,13 @@ def main():
     subparsers = parser.add_subparsers(dest="command", help="sub-command help")
     subparsers.required = True
 
+    # Configure subparsers for each command
+    configure_submit_parser(subparsers)
+
     args = parser.parse_args()
 
-    if args.command == "submit":
-        submit(args)
-    else:
-        print(f"Unknown command: {args.command}")
-        parser.print_help()
-        sys.exit(1)
+    # Execute the command
+    args.func(args)
 
 
 if __name__ == "__main__":

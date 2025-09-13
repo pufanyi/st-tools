@@ -59,7 +59,7 @@ class Script:
             for key, value in self.custom_env.items():
                 lines.append(Text.from_markup(f'  [green]{key}[/] = [yellow]"{value}"[/]'))
 
-        lines.append(Text.from_markup("\n[bold magenta]Command to be executed:[/magenta]"))
+        lines.append(Text.from_markup("\n[bold magenta]Command to be executed:[/]"))
 
         script_syntax = Syntax(self.script, "bash", theme="monokai", line_numbers=False)
 

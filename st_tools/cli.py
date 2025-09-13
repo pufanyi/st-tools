@@ -1,6 +1,6 @@
-import os
+import pathlib
 
 
 def main():
-    path = os.getcwd()
+    path = pathlib.Path.cwd()
     print(f"Hello from {path}")
